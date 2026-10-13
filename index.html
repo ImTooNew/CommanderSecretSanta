@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brew For Me — MTG Deck Requests</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{--bg:#e9e8ea;--panel:#fff;--ink:#1c1a1d;--mute:#6a6670;--line:#cfcdd2;--head:#f1f0f3;--nav:#231e2b;--acc:#5b4a99;--acc2:#7a68c0;--link:#4b3d8f}
+@media(prefers-color-scheme:dark){:root{--bg:#101012;--panel:#1b1b1f;--ink:#e6e4ea;--mute:#a09cab;--line:#34323a;--head:#25242b;--nav:#0a0a0c;--acc:#7a68c0;--acc2:#9482d6;--link:#a99be0}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif}
+.nav{background:var(--nav);color:#fff;border-bottom:3px solid var(--acc)}
+.nav .in{max-width:780px;margin:0 auto;padding:0 14px;display:flex;align-items:center;gap:18px;height:46px}
+.logo{font:700 20px "Beleren Bold",Beleren,"Matrix Bold",Georgia,serif;letter-spacing:.3px;margin-right:auto}
+.logo small{font:400 12px "Helvetica Neue",Arial,sans-serif;color:#b9b3c7;margin-left:8px;letter-spacing:0}
+.tab{background:none;border:0;color:#b9b3c7;font:600 13px inherit;font-family:inherit;height:46px;padding:0 4px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-3px}
+.tab.on{color:#fff;border-bottom-color:var(--acc2)}
+.wrap{max-width:780px;margin:0 auto;padding:14px}
+.panel{background:var(--panel);border:1px solid var(--line);margin-bottom:14px}
+.panel>h2{margin:0;padding:7px 12px;background:var(--head);border-bottom:1px solid var(--line);font:700 15px "Beleren Bold",Beleren,"Matrix Bold",Georgia,serif;display:flex;justify-content:space-between;align-items:baseline}
+.panel>h2 i{font:400 12px "Helvetica Neue",Arial,sans-serif;color:var(--mute);font-style:normal}
+.fr{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--line)}
+.fr:last-child{border-bottom:0}
+.fr>label,.fr>.k{padding:10px 12px;font-weight:700;font-size:13px;background:var(--head);border-right:1px solid var(--line)}
+.fr>label small,.fr>.k small{display:block;font-weight:400;color:var(--mute);font-size:11.5px;margin-top:2px}
+.fr>div{padding:9px 12px}
+@media(max-width:560px){.fr{grid-template-columns:1fr}.fr>label,.fr>.k{border-right:0;border-bottom:1px solid var(--line);padding:6px 12px}}
+input,textarea{width:100%;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:3px;padding:7px 8px;font:inherit}
+input:focus,textarea:focus{outline:0;border-color:var(--acc);box-shadow:0 0 0 2px rgba(122,104,192,.35)}
+textarea{resize:vertical;min-height:54px}
+.grp{font:700 11px "Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin:8px 0 4px}
+.grp:first-child{margin-top:0}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px;border:1px solid var(--line);border-radius:3px;background:var(--head);color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.chip.t{padding:3px 9px}
+.chip:hover{border-color:var(--acc2)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.ms{display:inline-flex}
+.m{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:700 9.5px Arial,sans-serif;color:#0d0f0f;box-shadow:-1px 1px 0 rgba(0,0,0,.85);margin-right:1px}
+.ms .m+.m{margin-left:-5px}
+.W{background:#f8f6d8}.U{background:#c1d7e9}.B{background:#bab1ab}.R{background:#e49977}.G{background:#a3c095}.C{background:#cac5c0}
+.pace{padding-top:2px}
+.pace input[type=range]{padding:0;border:0;height:22px;background:none;-webkit-appearance:none;appearance:none;cursor:pointer}
+.pace input[type=range]::-webkit-slider-runnable-track{height:6px;background:linear-gradient(90deg,#e49977,#cac5c0 50%,#c1d7e9);border:1px solid var(--line)}
+.pace input[type=range]::-moz-range-track{height:6px;background:linear-gradient(90deg,#e49977,#cac5c0 50%,#c1d7e9);border:1px solid var(--line)}
+.pace input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;margin-top:-7px;border-radius:50%;background:var(--acc);border:2px solid #fff;box-shadow:-1px 1px 0 rgba(0,0,0,.85)}
+.pace input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--acc);border:2px solid #fff;box-shadow:-1px 1px 0 rgba(0,0,0,.85)}
+.pace.off input[type=range]{opacity:.45}
+.pl{display:flex;justify-content:space-between;font-weight:700;font-size:12.5px;margin-top:2px}
+.pl span:nth-child(2){text-align:center}.pl span:last-child{text-align:right}
+.btns{display:flex;gap:8px;padding:10px 12px;background:var(--head);border-top:1px solid var(--line);flex-wrap:wrap}
+.btn{padding:8px 16px;border:1px solid var(--acc);background:var(--acc);color:#fff;border-radius:3px;font:700 13px inherit;font-family:inherit;cursor:pointer}
+.btn:hover{background:var(--acc2)}
+.btn.o{background:var(--panel);color:var(--link)}
+.msg{padding:0 12px 10px;color:var(--mute);min-height:20px;background:var(--head);font-size:12.5px}
+.r .rh{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--head);border-bottom:1px solid var(--line)}
+.r .rh b{font:700 15px "Beleren Bold",Beleren,Georgia,serif;flex:1}
+.r .bd{padding:9px 12px;display:grid;gap:6px}
+.line{font-size:13px}.line span{color:var(--mute);font-weight:700}
+.empty{text-align:center;color:var(--mute);padding:26px}
+.arow{display:flex;align-items:center;gap:10px;padding:7px 12px;border-top:1px solid var(--line)}
+.arow b{flex:1}.arow code{font:12px Consolas,Menlo,monospace;color:var(--mute)}
+.cm{position:relative}
+.cm .chips{margin-top:6px}
+.drop{position:absolute;left:12px;right:12px;top:42px;z-index:5;background:var(--panel);border:1px solid var(--acc);box-shadow:0 6px 16px rgba(0,0,0,.25);max-height:320px;overflow:auto}
+.opt{display:flex;gap:10px;align-items:center;padding:5px 8px;cursor:pointer;border-bottom:1px solid var(--line)}
+.opt:hover{background:var(--head)}
+.opt img{width:36px;height:50px;border-radius:3px;object-fit:cover;background:var(--head)}
+.opt b{display:block;font-size:13px}.opt small{color:var(--mute);font-size:11.5px}
+.note{padding:10px;color:var(--mute);font-size:12.5px}
+.chip .x{margin-left:2px;opacity:.8;font-weight:700}
+.cg{display:flex;flex-wrap:wrap;gap:10px}
+.cg a{display:block;width:150px;color:var(--ink);text-decoration:none;font-size:12px;font-weight:700;text-align:center}
+.cg img{width:150px;aspect-ratio:488/680;border-radius:7px;background:var(--head);display:block;margin-bottom:3px;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.cg .ph{width:150px;aspect-ratio:488/680;border:1px dashed var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;padding:8px;margin-bottom:3px;color:var(--mute)}
+.cnt{color:var(--mute);margin:0 0 8px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="nav"><div class="in"><div class="logo">Brew For Me<small>MTG deck requests</small></div>
+<button class="tab on" id="t1">My Request</button><button class="tab" id="t3">My Assignment</button><button class="tab" id="t2">Organizer</button></div></div>
+<div class="wrap">
+  <div id="form">
+    <div class="panel">
+      <h2>Your Request <i>fill in what you care about, skip the rest</i></h2>
+      <div class="fr"><label for="name">Name</label><div><input id="name" placeholder="Who are you?" maxlength="40"></div></div>
+      <div class="fr"><div class="k">Colors<small id="ccount">none = surprise me</small></div><div id="combos"></div></div>
+      <div class="fr"><div class="k">EDHREC archetypes<small id="acount">pick any</small></div><div><div class="chips" id="arch"></div></div></div>
+      <div class="fr"><div class="k">Play style<small id="pcount">no preference</small></div><div class="pace off" id="pace"><input type="range" id="pv" min="0" max="100" value="50"><div class="pl"><span>Aggro</span><span>Midrange</span><span>Control</span></div></div></div>
+      <div class="fr"><label for="cq">Commanders<small>searches Scryfall</small></label><div class="cm"><input id="cq" placeholder="Search for a commander…" autocomplete="off"><div class="drop" id="cdrop" hidden></div><div class="chips" id="csel"></div></div></div>
+      <div class="fr"><label for="notes">Special requests<small>anything else</small></label><div><textarea id="notes" placeholder="Combo, specific set, art style…"></textarea></div></div>
+      <div class="fr"><label for="no">Hard no's<small>dealbreakers</small></label><div><input id="no" placeholder="No infect, no stax, budget under $X…" maxlength="200"></div></div>
+      <div class="btns"><button class="btn" id="save">Save response file</button><button class="btn o" id="copy">Copy as text instead</button></div>
+      <div class="msg" id="msg"></div>
+    </div>
+  </div>
+
+  <div id="mine" hidden>
+    <div class="panel">
+      <h2>Open Your Assignment <i>from the file the organizer sent you</i></h2>
+      <div class="fr"><label for="afile">Assignment file<small>brew-assignment-….json</small></label><div><input type="file" id="afile" accept=".json,application/json"></div></div>
+    </div>
+    <div id="mycard"></div>
+  </div>
+
+  <div id="org" hidden>
+    <div class="panel">
+      <h2>Load Responses</h2>
+      <div class="fr"><label for="files">Files<small>select all at once</small></label><div><input type="file" id="files" accept=".json,application/json" multiple></div></div>
+    </div>
+    <div class="panel">
+      <h2>Assign Builders <i>nobody gets themselves</i></h2>
+      <div class="btns" style="border-top:0"><button class="btn" id="assign">Randomize assignments</button><button class="btn o" id="dlall" hidden>Download all files</button></div>
+      <div class="msg" id="amsg">Load everyone's files first. You'll get one file per person with a random name; the person inside is hidden from you.</div>
+      <div id="asg"></div>
+    </div>
+    <div id="list"></div>
+  </div>
+</div>
+
+<script>
+const COMBOS=[
+ ["Mono",[["W","White"],["U","Blue"],["B","Black"],["R","Red"],["G","Green"],["C","Colorless"]]],
+ ["Guilds",[["WU","Azorius"],["UB","Dimir"],["BR","Rakdos"],["RG","Gruul"],["GW","Selesnya"],["WB","Orzhov"],["UR","Izzet"],["BG","Golgari"],["RW","Boros"],["GU","Simic"]]],
+ ["Shards",[["GWU","Bant"],["WUB","Esper"],["UBR","Grixis"],["BRG","Jund"],["RGW","Naya"]]],
+ ["Wedges",[["WBG","Abzan"],["URW","Jeskai"],["BGU","Sultai"],["RWB","Mardu"],["GUR","Temur"]]],
+ ["4 colors",[["WUBR","Yore-Tiller"],["UBRG","Glint-Eye"],["BRGW","Dune-Brood"],["RGWU","Ink-Treader"],["GWUB","Witch-Maw"]]],
+ ["5 colors",[["WUBRG","Five-Color"]]]
+];
+const NAMES={};COMBOS.forEach(g=>g[1].forEach(([k,n])=>NAMES[k]=n));
+const ARCH=["Tokens","Aristocrats","Voltron","Spellslinger","Stax","Reanimator","Blink","+1/+1 Counters","Lifegain","Artifacts","Enchantress","Landfall","Tribal","Graveyard","Group Hug","Superfriends","Treasure","Sacrifice","Mill","Control","Ramp","Big Mana","Combo","Equipment","Clones","Wheels","Politics","Storm","Lands","Card Draw","Pillowfort","Chaos"];
+const $=id=>document.getElementById(id);
+const sel={combos:new Set(),arch:new Set()};
+let pace=null;
+const paceLabel=v=>v==null?"no preference":v<20?"Aggro":v<40?"Aggro / Midrange":v<=60?"Midrange":v<80?"Midrange / Control":"Control";
+$("pv").oninput=()=>{pace=+$("pv").value;$("pace").classList.remove("off");$("pcount").textContent=paceLabel(pace)};
+$("pcount").onclick=()=>{pace=null;$("pv").value=50;$("pace").classList.add("off");$("pcount").textContent=paceLabel(null)};
+$("pcount").title="Click to clear";$("pcount").style.cursor="pointer";
+const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const dots=k=>{const d=mk("span","ms");[...k].forEach(l=>d.append(mk("span","m "+l,l)));return d};
+
+COMBOS.forEach(([g,list])=>{
+  $("combos").append(mk("div","grp",g));
+  const w=mk("div","chips");
+  list.forEach(([k,n])=>{
+    const b=mk("button","chip");b.type="button";b.dataset.k=k;
+    b.append(dots(k),document.createTextNode(n));
+    b.onclick=()=>{sel.combos.has(k)?sel.combos.delete(k):sel.combos.add(k);b.classList.toggle("on");
+      $("ccount").textContent=sel.combos.size?sel.combos.size+" picked":"none = surprise me"};
+    w.append(b)});
+  $("combos").append(w)});
+ARCH.forEach(a=>{const b=mk("button","chip t",a);b.type="button";
+  b.onclick=()=>{sel.arch.has(a)?sel.arch.delete(a):sel.arch.add(a);b.classList.toggle("on");$("acount").textContent=sel.arch.size?sel.arch.size+" picked":"pick any"};
+  $("arch").append(b)});
+
+function show(n){$("form").hidden=n!==1;$("org").hidden=n!==2;$("mine").hidden=n!==3;[1,2,3].forEach(i=>$("t"+i).classList.toggle("on",n===i))}
+$("t1").onclick=()=>show(1);$("t2").onclick=()=>show(2);$("t3").onclick=()=>show(3);
+
+const cm=[];let hits=[],tmr,ctl;
+const imgUrl=c=>"https://api.scryfall.com/cards/named?"+(c.x?"exact":"fuzzy")+"="+encodeURIComponent(c.name)+"&format=image&version=normal";
+function renderSel(){const w=$("csel");w.replaceChildren();
+  cm.forEach((c,i)=>{const b=mk("button","chip t on",c.name);b.type="button";b.title="Remove";b.append(mk("span","x","×"));b.onclick=()=>{cm.splice(i,1);renderSel()};w.append(b)})}
+function addC(c){if(cm.length<6&&!cm.some(x=>x.name.toLowerCase()===c.name.toLowerCase()))cm.push(c);$("cq").value="";$("cdrop").hidden=true;hits=[];renderSel()}
+const drop=$("cdrop");
+function note(t){drop.replaceChildren(mk("div","note",t));drop.hidden=false}
+async function search(q){
+  ctl&&ctl.abort();ctl=new AbortController();
+  try{
+    const r=await fetch("https://api.scryfall.com/cards/search?q="+encodeURIComponent(q+" is:commander")+"&unique=cards&order=edhrec",{signal:ctl.signal});
+    if(r.status===404){hits=[];return note("No commanders found. Press Enter to add “"+q+"” as typed.")}
+    if(!r.ok)throw 0;
+    const j=await r.json();hits=j.data.slice(0,8);drop.replaceChildren();
+    hits.forEach(c=>{const o=mk("div","opt");const im=document.createElement("img");
+      im.src=(c.image_uris||(c.card_faces&&c.card_faces[0].image_uris)||{}).small||"";im.alt="";
+      const t=mk("div");t.append(mk("b",null,c.name),mk("small",null,c.type_line));o.append(im,t);
+      o.onmousedown=e=>{e.preventDefault();addC({name:c.name,id:c.id,x:1})};drop.append(o)});
+    drop.hidden=false;
+  }catch(e){if(e&&e.name==="AbortError")return;hits=[];note("Can't reach Scryfall. Press Enter to add “"+q+"” by name.")}
+}
+$("cq").oninput=()=>{clearTimeout(tmr);const q=$("cq").value.trim();if(q.length<2){drop.hidden=true;hits=[];return}tmr=setTimeout(()=>search(q),300)};
+$("cq").onkeydown=e=>{if(e.key!=="Enter")return;e.preventDefault();const q=$("cq").value.trim();if(!q)return;
+  if(hits.length)addC({name:hits[0].name,id:hits[0].id,x:1});else addC({name:q})};
+$("cq").onblur=()=>setTimeout(()=>{drop.hidden=true},150);
+function collect(){return{app:"brew-for-me",v:1,name:$("name").value.trim(),combos:[...sel.combos],arch:[...sel.arch],
+  pace,cmdrs:cm.map(c=>({name:c.name,id:c.id,x:c.x?1:0})),notes:$("notes").value.trim(),avoid:$("no").value.trim()}}
+
+function asText(d){return `${d.name}\nColors: ${d.combos.map(k=>NAMES[k]).join(", ")||"any"}\nPlay style: ${paceLabel(d.pace)}\nArchetypes: ${d.arch.join(", ")||"any"}\nCommanders: ${(d.cmdrs||[]).map(c=>c.name).join(", ")||"-"}\nSpecial requests: ${d.notes||"-"}\nAvoid: ${d.avoid||"-"}`}
+
+$("save").onclick=()=>{
+  const d=collect();if(!d.name){$("msg").textContent="Add your name first.";return}
+  const blob=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="brew-"+d.name.replace(/[^\w-]+/g,"_")+".json";document.body.append(a);a.click();a.remove();
+  $("msg").textContent="✓ File saved — send it to the organizer.";
+};
+$("copy").onclick=async()=>{
+  const d=collect();if(!d.name){$("msg").textContent="Add your name first.";return}
+  try{await navigator.clipboard.writeText(asText(d));$("msg").textContent="✓ Copied — paste it in a message to the organizer."}
+  catch(e){prompt("Copy this and send it:",asText(d))}
+};
+
+const all=new Map();
+function cardFor(d){
+  const c=mk("div","panel r"),h=mk("div","rh");h.append(mk("b",null,d.name));
+  d.combos.forEach(k=>{const x=mk("span","chip");x.style.cursor="default";x.append(dots(k),document.createTextNode(NAMES[k]));h.append(x)});
+  if(!d.combos.length)h.append(mk("span","line","any colors"));
+  c.append(h);const bd=mk("div","bd");
+  if(d.arch.length){const ch=mk("div","chips");d.arch.forEach(a=>{const x=mk("span","chip t on",a);x.style.cursor="default";ch.append(x)});bd.append(ch)}
+  if((d.cmdrs||[]).length){const g=mk("div","cg");d.cmdrs.forEach(c=>{
+    const a=mk("a");a.href="https://scryfall.com/search?q="+encodeURIComponent('!"'+c.name+'"');a.target="_blank";a.rel="noopener";
+    const im=document.createElement("img");im.alt=c.name;im.loading="lazy";im.src=imgUrl(c);
+    im.onerror=()=>{const p=mk("div","ph",c.name);im.replaceWith(p)};
+    a.append(im,document.createTextNode(c.name));g.append(a)});bd.append(g)}
+  [["Play style",d.pace==null?"":paceLabel(d.pace)],["Requests",d.notes],["Avoid",d.avoid]].forEach(([l,v])=>{
+    if(v){const p=mk("div","line");p.append(mk("span",null,l+": "),document.createTextNode(v));bd.append(p)}});
+  c.append(bd);return c}
+function render(){
+  const box=$("list");box.replaceChildren();
+  if(!all.size){box.append(mk("div","empty","No responses loaded yet."));return}
+  box.append(mk("p","cnt",all.size+" response"+(all.size>1?"s":"")));
+  [...all.values()].sort((a,b)=>a.name.localeCompare(b.name)).forEach(d=>box.append(cardFor(d)));
+}
+const rnd=n=>{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%n};
+const rid=()=>{const c="abcdefghjkmnpqrstuvwxyz23456789";let r="";for(let i=0;i<8;i++)r+=c[rnd(c.length)];return r};
+function derange(n){
+  for(;;){const p=[...Array(n).keys()];
+    for(let i=n-1;i>0;i--){const j=rnd(i+1);[p[i],p[j]]=[p[j],p[i]]}
+    if(p.every((v,i)=>v!==i))return p}}
+const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+const dec=t=>JSON.parse(decodeURIComponent(escape(atob(t))));
+function dl(name,text){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"application/json"}));a.download=name;document.body.append(a);a.click();a.remove()}
+let files=[];
+$("assign").onclick=()=>{
+  const people=[...all.values()];
+  if(people.length<2){$("amsg").textContent="Need at least 2 responses loaded.";return}
+  if(files.length&&!confirm("This will reshuffle and invalidate files you already sent. Continue?"))return;
+  const p=derange(people.length);
+  files=people.map((b,i)=>({builder:b.name,fname:"brew-assignment-"+rid()+".json",
+    text:JSON.stringify({app:"brew-for-me-assignment",v:1,for:b.name,data:enc(people[p[i]])})}));
+  files.sort((a,b)=>a.builder.localeCompare(b.builder));
+  const box=$("asg");box.replaceChildren();
+  files.forEach(f=>{const r=mk("div","arow");r.append(mk("b",null,f.builder),mk("code",null,f.fname));
+    const b=mk("button","btn o","Download");b.onclick=()=>dl(f.fname,f.text);r.append(b);box.append(r)});
+  $("dlall").hidden=false;
+  $("amsg").textContent="Done. Send each person their own file. Assignments aren't stored here, so don't refresh before downloading.";
+};
+$("dlall").onclick=()=>files.forEach((f,i)=>setTimeout(()=>dl(f.fname,f.text),i*400));
+$("afile").onchange=async e=>{
+  const box=$("mycard");box.replaceChildren();
+  try{const j=JSON.parse(await e.target.files[0].text());
+    if(j.app!=="brew-for-me-assignment")throw 0;
+    const d=dec(j.data);d.combos=(d.combos||[]).filter(k=>NAMES[k]);d.arch=d.arch||[];
+    box.append(mk("p","cnt","Hi "+j.for+" — you're building a deck for:"),cardFor(d));
+  }catch(_){box.append(mk("div","empty","That doesn't look like an assignment file."))}
+};
+$("files").onchange=async e=>{
+  for(const f of e.target.files){
+    try{const d=JSON.parse(await f.text());
+      if(d.app==="brew-for-me"&&d.name)all.set(d.name.toLowerCase(),{name:String(d.name),combos:(d.combos||[]).filter(k=>NAMES[k]),arch:d.arch||[],pace:typeof d.pace==="number"?d.pace:null,cmdrs:Array.isArray(d.cmdrs)?d.cmdrs.filter(c=>c&&c.name).map(c=>({name:String(c.name),id:c.id,x:c.x?1:0})):String(d.commanders||"").split(/[,\n]+/).map(n=>({name:n.trim()})).filter(c=>c.name),notes:d.notes||d.cards||"",avoid:d.avoid||""})}
+    catch(_){}}
+  e.target.value="";render();
+};
+render();
+</script>
+</body>
+</html>
