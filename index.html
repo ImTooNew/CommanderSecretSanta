@@ -39,15 +39,6 @@ textarea{resize:vertical;min-height:54px}
 .m{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:700 9.5px Arial,sans-serif;color:#0d0f0f;box-shadow:-1px 1px 0 rgba(0,0,0,.85);margin-right:1px}
 .ms .m+.m{margin-left:-5px}
 .W{background:#f8f6d8}.U{background:#c1d7e9}.B{background:#bab1ab}.R{background:#e49977}.G{background:#a3c095}.C{background:#cac5c0}
-.pace{padding-top:2px}
-.pace input[type=range]{padding:0;border:0;height:22px;background:none;-webkit-appearance:none;appearance:none;cursor:pointer}
-.pace input[type=range]::-webkit-slider-runnable-track{height:6px;background:linear-gradient(90deg,#e49977,#cac5c0 50%,#c1d7e9);border:1px solid var(--line)}
-.pace input[type=range]::-moz-range-track{height:6px;background:linear-gradient(90deg,#e49977,#cac5c0 50%,#c1d7e9);border:1px solid var(--line)}
-.pace input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;margin-top:-7px;border-radius:50%;background:var(--acc);border:2px solid #fff;box-shadow:-1px 1px 0 rgba(0,0,0,.85)}
-.pace input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--acc);border:2px solid #fff;box-shadow:-1px 1px 0 rgba(0,0,0,.85)}
-.pace.off input[type=range]{opacity:.45}
-.pl{display:flex;justify-content:space-between;font-weight:700;font-size:12.5px;margin-top:2px}
-.pl span:nth-child(2){text-align:center}.pl span:last-child{text-align:right}
 .btns{display:flex;gap:8px;padding:10px 12px;background:var(--head);border-top:1px solid var(--line);flex-wrap:wrap}
 .btn{padding:8px 16px;border:1px solid var(--acc);background:var(--acc);color:#fff;border-radius:3px;font:700 13px inherit;font-family:inherit;cursor:pointer}
 .btn:hover{background:var(--acc2)}
@@ -73,6 +64,9 @@ textarea{resize:vertical;min-height:54px}
 .cg a{display:block;width:150px;color:var(--ink);text-decoration:none;font-size:12px;font-weight:700;text-align:center}
 .cg img{width:150px;aspect-ratio:488/680;border-radius:7px;background:var(--head);display:block;margin-bottom:3px;box-shadow:0 2px 6px rgba(0,0,0,.35)}
 .cg .ph{width:150px;aspect-ratio:488/680;border:1px dashed var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;padding:8px;margin-bottom:3px;color:var(--mute)}
+.og{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.og a{display:block;width:78px}.og img{width:78px;aspect-ratio:488/680;border-radius:5px;display:block;background:var(--head);box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.og a.otx{width:auto;padding:3px 8px;border:1px solid var(--line);border-radius:3px;background:var(--head);color:var(--ink);text-decoration:none;font-size:12px}
 .cnt{color:var(--mute);margin:0 0 8px;font-size:13px}
 </style>
 </head>
@@ -86,8 +80,8 @@ textarea{resize:vertical;min-height:54px}
       <div class="fr"><label for="name">Name</label><div><input id="name" placeholder="Who are you?" maxlength="40"></div></div>
       <div class="fr"><div class="k">Colors<small id="ccount">none = surprise me</small></div><div id="combos"></div></div>
       <div class="fr"><div class="k">EDHREC archetypes<small id="acount">pick any</small></div><div><div class="chips" id="arch"></div></div></div>
-      <div class="fr"><div class="k">Play style<small id="pcount">no preference</small></div><div class="pace off" id="pace"><input type="range" id="pv" min="0" max="100" value="50"><div class="pl"><span>Aggro</span><span>Midrange</span><span>Control</span></div></div></div>
       <div class="fr"><label for="cq">Commanders<small>searches Scryfall</small></label><div class="cm"><input id="cq" placeholder="Search for a commander…" autocomplete="off"><div class="drop" id="cdrop" hidden></div><div class="chips" id="csel"></div></div></div>
+      <div class="fr"><label for="oq">Already own<small>commanders to skip</small></label><div class="cm"><input id="oq" placeholder="Search commanders you already own…" autocomplete="off"><div class="drop" id="odrop" hidden></div><div class="chips" id="osel"></div></div></div>
       <div class="fr"><label for="notes">Special requests<small>anything else</small></label><div><textarea id="notes" placeholder="Combo, specific set, art style…"></textarea></div></div>
       <div class="fr"><label for="no">Hard no's<small>dealbreakers</small></label><div><input id="no" placeholder="No infect, no stax, budget under $X…" maxlength="200"></div></div>
       <div class="btns"><button class="btn" id="save">Save response file</button><button class="btn o" id="copy">Copy as text instead</button></div>
@@ -131,11 +125,6 @@ const NAMES={};COMBOS.forEach(g=>g[1].forEach(([k,n])=>NAMES[k]=n));
 const ARCH=["Tokens","Aristocrats","Voltron","Spellslinger","Stax","Reanimator","Blink","+1/+1 Counters","Lifegain","Artifacts","Enchantress","Landfall","Tribal","Graveyard","Group Hug","Superfriends","Treasure","Sacrifice","Mill","Control","Ramp","Big Mana","Combo","Equipment","Clones","Wheels","Politics","Storm","Lands","Card Draw","Pillowfort","Chaos"];
 const $=id=>document.getElementById(id);
 const sel={combos:new Set(),arch:new Set()};
-let pace=null;
-const paceLabel=v=>v==null?"no preference":v<20?"Aggro":v<40?"Aggro / Midrange":v<=60?"Midrange":v<80?"Midrange / Control":"Control";
-$("pv").oninput=()=>{pace=+$("pv").value;$("pace").classList.remove("off");$("pcount").textContent=paceLabel(pace)};
-$("pcount").onclick=()=>{pace=null;$("pv").value=50;$("pace").classList.add("off");$("pcount").textContent=paceLabel(null)};
-$("pcount").title="Click to clear";$("pcount").style.cursor="pointer";
 const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 const dots=k=>{const d=mk("span","ms");[...k].forEach(l=>d.append(mk("span","m "+l,l)));return d};
 
@@ -156,35 +145,37 @@ ARCH.forEach(a=>{const b=mk("button","chip t",a);b.type="button";
 function show(n){$("form").hidden=n!==1;$("org").hidden=n!==2;$("mine").hidden=n!==3;[1,2,3].forEach(i=>$("t"+i).classList.toggle("on",n===i))}
 $("t1").onclick=()=>show(1);$("t2").onclick=()=>show(2);$("t3").onclick=()=>show(3);
 
-const cm=[];let hits=[],tmr,ctl;
 const imgUrl=c=>"https://api.scryfall.com/cards/named?"+(c.x?"exact":"fuzzy")+"="+encodeURIComponent(c.name)+"&format=image&version=normal";
-function renderSel(){const w=$("csel");w.replaceChildren();
-  cm.forEach((c,i)=>{const b=mk("button","chip t on",c.name);b.type="button";b.title="Remove";b.append(mk("span","x","×"));b.onclick=()=>{cm.splice(i,1);renderSel()};w.append(b)})}
-function addC(c){if(cm.length<6&&!cm.some(x=>x.name.toLowerCase()===c.name.toLowerCase()))cm.push(c);$("cq").value="";$("cdrop").hidden=true;hits=[];renderSel()}
-const drop=$("cdrop");
-function note(t){drop.replaceChildren(mk("div","note",t));drop.hidden=false}
-async function search(q){
-  ctl&&ctl.abort();ctl=new AbortController();
-  try{
-    const r=await fetch("https://api.scryfall.com/cards/search?q="+encodeURIComponent(q+" is:commander")+"&unique=cards&order=edhrec",{signal:ctl.signal});
-    if(r.status===404){hits=[];return note("No commanders found. Press Enter to add “"+q+"” as typed.")}
-    if(!r.ok)throw 0;
-    const j=await r.json();hits=j.data.slice(0,8);drop.replaceChildren();
-    hits.forEach(c=>{const o=mk("div","opt");const im=document.createElement("img");
-      im.src=(c.image_uris||(c.card_faces&&c.card_faces[0].image_uris)||{}).small||"";im.alt="";
-      const t=mk("div");t.append(mk("b",null,c.name),mk("small",null,c.type_line));o.append(im,t);
-      o.onmousedown=e=>{e.preventDefault();addC({name:c.name,id:c.id,x:1})};drop.append(o)});
-    drop.hidden=false;
-  }catch(e){if(e&&e.name==="AbortError")return;hits=[];note("Can't reach Scryfall. Press Enter to add “"+q+"” by name.")}
+function picker(inp,dropId,selId,arr,max){
+  let hits=[],tmr,ctl;const drop=$(dropId),box=$(selId),q$=$(inp);
+  const renderSel=()=>{box.replaceChildren();arr.forEach((c,i)=>{const b=mk("button","chip t on",c.name);b.type="button";b.title="Remove";b.append(mk("span","x","×"));b.onclick=()=>{arr.splice(i,1);renderSel()};box.append(b)})};
+  const add=c=>{if(arr.length<max&&!arr.some(x=>x.name.toLowerCase()===c.name.toLowerCase()))arr.push(c);q$.value="";drop.hidden=true;hits=[];renderSel()};
+  const note=t=>{drop.replaceChildren(mk("div","note",t));drop.hidden=false};
+  async function search(q){
+    ctl&&ctl.abort();ctl=new AbortController();
+    try{
+      const r=await fetch("https://api.scryfall.com/cards/search?q="+encodeURIComponent(q+" is:commander")+"&unique=cards&order=edhrec",{signal:ctl.signal});
+      if(r.status===404){hits=[];return note("No commanders found. Press Enter to add “"+q+"” as typed.")}
+      if(!r.ok)throw 0;
+      const j=await r.json();hits=j.data.slice(0,8);drop.replaceChildren();
+      hits.forEach(c=>{const o=mk("div","opt");const im=document.createElement("img");
+        im.src=(c.image_uris||(c.card_faces&&c.card_faces[0].image_uris)||{}).small||"";im.alt="";
+        const t=mk("div");t.append(mk("b",null,c.name),mk("small",null,c.type_line));o.append(im,t);
+        o.onmousedown=e=>{e.preventDefault();add({name:c.name,id:c.id,x:1})};drop.append(o)});
+      drop.hidden=false;
+    }catch(e){if(e&&e.name==="AbortError")return;hits=[];note("Can't reach Scryfall. Press Enter to add “"+q+"” by name.")}
+  }
+  q$.oninput=()=>{clearTimeout(tmr);const q=q$.value.trim();if(q.length<2){drop.hidden=true;hits=[];return}tmr=setTimeout(()=>search(q),300)};
+  q$.onkeydown=e=>{if(e.key!=="Enter")return;e.preventDefault();const q=q$.value.trim();if(!q)return;
+    if(hits.length)add({name:hits[0].name,id:hits[0].id,x:1});else add({name:q})};
+  q$.onblur=()=>setTimeout(()=>{drop.hidden=true},150);
 }
-$("cq").oninput=()=>{clearTimeout(tmr);const q=$("cq").value.trim();if(q.length<2){drop.hidden=true;hits=[];return}tmr=setTimeout(()=>search(q),300)};
-$("cq").onkeydown=e=>{if(e.key!=="Enter")return;e.preventDefault();const q=$("cq").value.trim();if(!q)return;
-  if(hits.length)addC({name:hits[0].name,id:hits[0].id,x:1});else addC({name:q})};
-$("cq").onblur=()=>setTimeout(()=>{drop.hidden=true},150);
+const cm=[],own=[];
+picker("cq","cdrop","csel",cm,6);picker("oq","odrop","osel",own,40);
 function collect(){return{app:"brew-for-me",v:1,name:$("name").value.trim(),combos:[...sel.combos],arch:[...sel.arch],
-  pace,cmdrs:cm.map(c=>({name:c.name,id:c.id,x:c.x?1:0})),notes:$("notes").value.trim(),avoid:$("no").value.trim()}}
+  cmdrs:cm.map(c=>({name:c.name,id:c.id,x:c.x?1:0})),owned:own.map(c=>({name:c.name,id:c.id,x:c.x?1:0})),notes:$("notes").value.trim(),avoid:$("no").value.trim()}}
 
-function asText(d){return `${d.name}\nColors: ${d.combos.map(k=>NAMES[k]).join(", ")||"any"}\nPlay style: ${paceLabel(d.pace)}\nArchetypes: ${d.arch.join(", ")||"any"}\nCommanders: ${(d.cmdrs||[]).map(c=>c.name).join(", ")||"-"}\nSpecial requests: ${d.notes||"-"}\nAvoid: ${d.avoid||"-"}`}
+function asText(d){return `${d.name}\nColors: ${d.combos.map(k=>NAMES[k]).join(", ")||"any"}\nArchetypes: ${d.arch.join(", ")||"any"}\nCommanders: ${(d.cmdrs||[]).map(c=>c.name).join(", ")||"-"}\nAlready owns: ${(d.owned||[]).map(c=>c.name).join(", ")||"-"}\nSpecial requests: ${d.notes||"-"}\nAvoid: ${d.avoid||"-"}`}
 
 $("save").onclick=()=>{
   const d=collect();if(!d.name){$("msg").textContent="Add your name first.";return}
@@ -211,7 +202,11 @@ function cardFor(d){
     const im=document.createElement("img");im.alt=c.name;im.loading="lazy";im.src=imgUrl(c);
     im.onerror=()=>{const p=mk("div","ph",c.name);im.replaceWith(p)};
     a.append(im,document.createTextNode(c.name));g.append(a)});bd.append(g)}
-  [["Play style",d.pace==null?"":paceLabel(d.pace)],["Requests",d.notes],["Avoid",d.avoid]].forEach(([l,v])=>{
+  if((d.owned||[]).length){const o=mk("div","line");o.append(mk("span",null,"Already owns, don't build ("+d.owned.length+"): "));
+    const g=mk("div","og");d.owned.forEach(c=>{const a=mk("a");a.href="https://scryfall.com/search?q="+encodeURIComponent('!"'+c.name+'"');a.target="_blank";a.rel="noopener";a.title=c.name;
+      const im=document.createElement("img");im.alt=c.name;im.loading="lazy";im.src=imgUrl(c);im.onerror=()=>{a.replaceChildren(document.createTextNode(c.name));a.className="otx"};a.append(im);g.append(a)});
+    o.append(g);bd.append(o)}
+  [["Requests",d.notes],["Avoid",d.avoid]].forEach(([l,v])=>{
     if(v){const p=mk("div","line");p.append(mk("span",null,l+": "),document.createTextNode(v));bd.append(p)}});
   c.append(bd);return c}
 function render(){
@@ -256,7 +251,7 @@ $("afile").onchange=async e=>{
 $("files").onchange=async e=>{
   for(const f of e.target.files){
     try{const d=JSON.parse(await f.text());
-      if(d.app==="brew-for-me"&&d.name)all.set(d.name.toLowerCase(),{name:String(d.name),combos:(d.combos||[]).filter(k=>NAMES[k]),arch:d.arch||[],pace:typeof d.pace==="number"?d.pace:null,cmdrs:Array.isArray(d.cmdrs)?d.cmdrs.filter(c=>c&&c.name).map(c=>({name:String(c.name),id:c.id,x:c.x?1:0})):String(d.commanders||"").split(/[,\n]+/).map(n=>({name:n.trim()})).filter(c=>c.name),notes:d.notes||d.cards||"",avoid:d.avoid||""})}
+      if(d.app==="brew-for-me"&&d.name)all.set(d.name.toLowerCase(),{name:String(d.name),combos:(d.combos||[]).filter(k=>NAMES[k]),arch:d.arch||[],owned:(Array.isArray(d.owned)?d.owned:[]).filter(c=>c&&c.name).map(c=>({name:String(c.name),id:c.id,x:c.x?1:0})),cmdrs:Array.isArray(d.cmdrs)?d.cmdrs.filter(c=>c&&c.name).map(c=>({name:String(c.name),id:c.id,x:c.x?1:0})):String(d.commanders||"").split(/[,\n]+/).map(n=>({name:n.trim()})).filter(c=>c.name),notes:d.notes||d.cards||"",avoid:d.avoid||""})}
     catch(_){}}
   e.target.value="";render();
 };
